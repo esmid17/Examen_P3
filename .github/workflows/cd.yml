@@ -1,0 +1,51 @@
+name: CD - Deploy to Firebase
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    if: github.event.pull_request == null || github.event.pull_request.draft == false
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Deploy to Firebase Hosting (PR Preview)
+        if: github.event_name == 'pull_request'
+        run: |
+          firebase deploy --token "${{ secrets.FIREBASE_TOKEN }}" --only hosting:examen-p3-espe --project examen-p3-espe
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        continue-on-error: true
+
+      - name: Deploy to Firebase Hosting (Live)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          firebase deploy --token "${{ secrets.FIREBASE_TOKEN }}" --only hosting:examen-p3-espe --project examen-p3-espe
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+      - name: Comment PR with Firebase Hosting URL
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Firebase Hosting preview available at: https://examen-p3-espe.web.app'
+            })

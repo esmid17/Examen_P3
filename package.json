@@ -1,0 +1,24 @@
+{
+  "name": "examen-p3",
+  "version": "1.0.0",
+  "description": "Sistema de CI/CD con funciones de cálculo de notas y despliegue a Firebase",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
+    "lint": "eslint src tests",
+    "lint:fix": "eslint src tests --fix",
+    "ci": "npm run lint && npm run test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.50.0",
+    "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "lint": "^0.8.19"
+  }
+}
