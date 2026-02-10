@@ -8,6 +8,7 @@
     "test:watch": "jest --watch",
     "lint": "eslint src tests",
     "lint:fix": "eslint src tests --fix",
+    "build": "npm run lint && npm run test",
     "ci": "npm run lint && npm run test"
   },
   "keywords": [],
