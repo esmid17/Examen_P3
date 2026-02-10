@@ -48,7 +48,7 @@ function calcWeightedGrade(items) {
 
   if (Math.abs(weightSum - 1) > WEIGHT_TOLERANCE) {
     throw new RangeError(
-      `La suma de pesos debe ser 1 (tolerancia ±0.001), actual: ${weightSum.toFixed(6)}`
+      `La suma de pesos debe ser 1, suma obtenida: ${weightSum.toFixed(6)}`
     );
   }
 

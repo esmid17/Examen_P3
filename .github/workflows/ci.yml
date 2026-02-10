@@ -1,42 +1,33 @@
-name: CI
+name: CI Workflow
 
 on:
   push:
     branches: [main]
+
   pull_request:
     branches: [main]
 
 jobs:
-  ci:
+  build_and_test:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x]
-
+    
     steps:
-      - uses: actions/checkout@v3
+      - name: Clonar el repositorio
+        uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '20'
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Instalar dependencias
+        run: npm install
 
-      - name: Run linter
+      - name: Lint del codigo
         run: npm run lint
-        continue-on-error: false
 
-      - name: Run tests with coverage
-        run: npm run test
-        continue-on-error: false
-
-      - name: Upload coverage reports
-        uses: codecov/codecov-action@v3
-        with:
-          files: ./coverage/coverage-final.json
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: false
+      - name: Ejecutamos las pruebas
+        run: npm test
+      
+      - name: Build
+        run: npm ci && npm run build

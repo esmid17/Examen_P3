@@ -6,19 +6,17 @@
  * @throws {RangeError} Si p está fuera de rango o values está vacío
  */
 function percentile(p, values) {
-  // Validar tipo de p
+
   if (typeof p !== 'number') {
     throw new TypeError('p debe ser un número');
   }
 
-  // Validar tipo de values
   if (!Array.isArray(values)) {
-    throw new TypeError('values debe ser un arreglo');
+    throw new TypeError('Debe ser un arreglo');
   }
 
-  // Validar que values no esté vacío
   if (values.length === 0) {
-    throw new RangeError('values no puede estar vacío');
+    throw new RangeError('No puede estar vacío');
   }
 
   // Validar que p sea finito
@@ -26,7 +24,7 @@ function percentile(p, values) {
     throw new TypeError('p debe ser un número finito');
   }
 
-  // Validar que todos los elementos de values sean números
+  // Validar que todos los elementos sean números
   values.forEach((value, index) => {
     if (typeof value !== 'number' || !isFinite(value)) {
       throw new TypeError(`Elemento en índice ${index} debe ser un número finito`);
